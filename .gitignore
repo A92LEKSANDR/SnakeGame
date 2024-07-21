@@ -1,0 +1,19 @@
+#Build files/directory
+/build/
+*.o
+*.a
+*.so
+*.exe
+*.out
+
+#Vim files
+*.swp
+*.swo
+*.swn
+*~
+
+#ALL
+*.bak
+*.backup
+*.tmp
+*.log
