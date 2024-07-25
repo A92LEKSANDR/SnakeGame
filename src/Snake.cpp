@@ -1,8 +1,5 @@
 #include "Snake.hpp"
 
-class Snake{
-public:
+//Snake::Snake(){}
 
 
-
-};
