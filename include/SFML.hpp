@@ -1,5 +1,5 @@
-#ifndef SFMLglob
-#define SFMLglob
+#ifndef SFML
+#define SFML
 
 #include <SFML/Graphics.hpp>
 

@@ -1,6 +1,7 @@
 #include "Game.hpp"
 
-Game::Game():window(sf::VideoMode(800, 600), "Snake Game"){}
+
+Game::Game():window(sf::VideoMode(constants::weight,constants::height), "Snake Game"){}
 
 void Game::start(){
    while (window.isOpen()) {
