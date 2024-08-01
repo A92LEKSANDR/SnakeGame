@@ -2,13 +2,11 @@
 
 
 Game::Game()
-    :window(sf::VideoMode(CONST::weight,CONST::height), "Snake Game"){
-    if(!background.loadFromFile("resources/background.png")){
-        
+    :window(sf::VideoMode(consts::weight,consts::height), "Snake Game"){
+    if(!background.loadFromFile("../resources/background.png")){
+      
     }
-    else{
         sprite.setTexture(background);
-    }
 }
 
 void Game::start(){
@@ -22,9 +20,9 @@ void Game::start(){
        window.clear(sf::Color::Black);
        // Drawing code here
 
-       for(int i = 0; i < CONST::n; ++i){
-           for(int j = 0; j < CONST::m; ++j){
-                sprite.setPosition(i*CONST::size,j*CONST::size);
+       for(int i = 0; i < consts::n; ++i){
+           for(int j = 0; j < consts::m; ++j){
+                sprite.setPosition(i*consts::size,j*consts::size);
                 window.draw(sprite);
            }
        }
