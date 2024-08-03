@@ -1,10 +1,9 @@
 #include "constants.h"
 
 namespace consts{
-   const int size = 25;
-   const int n = 20;
-   const int m = 30;
-   const int weight = 800;
-   const int height = 600;
-
+   const int titleSize = 25;
+   const int countTitleWeight = 20;
+   const int countTitleHeight = 30;
+   int weightWindow = titleSize * countTitleWeight;
+   int heightWindow = titleSize * countTitleHeight;
 }

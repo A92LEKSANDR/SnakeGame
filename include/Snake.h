@@ -1,24 +1,20 @@
 #pragma once
-
 #include <SFML/Graphics.hpp>
-#include <vector>
+#include "constants.h"
 
 class Snake {
-public:
-    Snake(int cellSize, int initialLength, int fieldWidth, int fieldHeight);
-
-    void move();
-    void setDirection(sf::Vector2i direction);
-    void grow();
-    bool checkSelfCollision() const;
-    void draw(sf::RenderWindow& window) const;
-
 private:
-    std::vector<sf::Vector2i> segments;
-    sf::Vector2i direction;
-    int cellSize;
-    int fieldWidth;
-    int fieldHeight;
-
-    void wrapAround();
+    struct Segment {
+        int x, y;
+    };
+    int maxLength;
+    int length;
+    int dir; // direction
+    Segment* segment;
+public:
+    Snake(int maxLength);
+    void Tick();
+    void ChangeDirection(int newDirection);
+    void Draw(sf::RenderWindow& window, sf::Sprite& sprite);
 };
+
