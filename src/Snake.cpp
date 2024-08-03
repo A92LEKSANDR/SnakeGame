@@ -1,5 +1,6 @@
 #include "Snake.h"
 
+<<<<<<< HEAD
 Snake::Snake(int maxLength) : maxLength(maxLength), length(4), dir(0) {
     segment = new Segment[maxLength];
     for (int i = 0; i < length; ++i) {
@@ -7,6 +8,9 @@ Snake::Snake(int maxLength) : maxLength(maxLength), length(4), dir(0) {
         segment[i].y = 0;
     }
 }
+=======
+//Snake::Snake(){}
+>>>>>>> c5ab4388a6eedfa5823698ecb0801f35237507ea
 
 void Snake::Tick() {
     for (int i = length; i > 0; --i) {
@@ -19,6 +23,7 @@ void Snake::Tick() {
     if (dir == 3) segment[0].y -= 1;
 }
 
+<<<<<<< HEAD
 void Snake::ChangeDirection(int newDirection) {
     dir = newDirection;
 }
@@ -29,3 +34,5 @@ void Snake::Draw(sf::RenderWindow& window, sf::Sprite& sprite) {
         window.draw(sprite);
     }
 }
+=======
+>>>>>>> c5ab4388a6eedfa5823698ecb0801f35237507ea

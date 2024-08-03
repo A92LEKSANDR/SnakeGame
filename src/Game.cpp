@@ -1,7 +1,12 @@
 #include "Game.h"
 
+<<<<<<< HEAD
 Game::Game() : window(sf::VideoMode(consts::weightWindow,consts::heightWindow),"Snake Game", sf::Style::Close | sf::Style::Titlebar),
                snake(100),timer(0),delay(0.1f){
+=======
+
+Game::Game():window(sf::VideoMode(constants::weight,constants::height), "Snake Game"){}
+>>>>>>> c5ab4388a6eedfa5823698ecb0801f35237507ea
 
  if (!backgroundTexture.loadFromFile("../resources/background.png")) {
         std::cerr << "img for background loading error" << std::endl;
