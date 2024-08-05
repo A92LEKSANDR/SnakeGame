@@ -1,13 +1,29 @@
 #pragma once
+#include "SFMLHeaders.h"
 #include "Snake.h"
-#include "constants.h" 
+#include "Food.h"
+#include "constants.h"
+#include <iostream>
+#include <time.h>
 
-class Game{
-sf::RenderWindow window;
-sf::Texture background;
-sf::Sprite sprite;
+enum class Direction { Right, Down, Left, Up };
+
+class Game {
+private:
+    void ProcessEvents();
+    void Update();
+    void Render();
+    sf::RenderWindow window;
+    sf::Texture backgroundTexture;
+    sf::Texture snakeTexture;
+    sf::Sprite backgroundSprite;
+    sf::Sprite snakeSprite;
+    sf::Clock clock;
+    float timer;
+    float delay;
+    Snake snake;
+   // Food food;
 public:
     Game();
-    void start();
-
+    void run();
 };

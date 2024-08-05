@@ -1,33 +1,69 @@
 #include "Game.h"
 
+Game::Game() : window(sf::VideoMode(consts::weightWindow, consts::heightWindow), "Snake Game", sf::Style::Close | sf::Style::Titlebar),
+snake(100), timer(0), delay(0.1f) {
 
-Game::Game()
-    :window(sf::VideoMode(CONST::weight,CONST::height), "Snake Game"){
-    if(!background.loadFromFile("resources/background.png")){
-        
+    if (!backgroundTexture.loadFromFile("resources/background.png")) {
+        std::cerr << "img for background loading error" << std::endl;
     }
-    else{
-        sprite.setTexture(background);
+    if (!snakeTexture.loadFromFile("resources/sb.png")) {
+        std::cerr << "img for snake loading error" << std::endl;
+    }
+    backgroundSprite.setTexture(backgroundTexture);
+    snakeSprite.setTexture(snakeTexture);
+
+    srand(static_cast<unsigned>(time(0)));
+}
+
+void Game::run() {
+    while (window.isOpen()) {
+        ProcessEvents();
+        Update();
+        Render();
     }
 }
 
-void Game::start(){
-   while (window.isOpen()) {
-       sf::Event event;
-           while (window.pollEvent(event)) {
-               if (event.type == sf::Event::Closed)
-                   window.close();
-           }
+void Game::ProcessEvents() {
+    sf::Event event;
+    while (window.pollEvent(event)) {
+        if (event.type == sf::Event::Closed) {
+            window.close();
+        }
+        if (event.type == sf::Event::KeyPressed) {
+            if (event.key.code == sf::Keyboard::Left) { 
+                snake.ChangeDirection(static_cast<int>(Direction::Left)); 
+            } // Влево
+            if (event.key.code == sf::Keyboard::Right) { 
+                snake.ChangeDirection(static_cast<int>(Direction::Right)); 
+            } // Вправо
+            if (event.key.code == sf::Keyboard::Up) { 
+               snake.ChangeDirection(static_cast<int>(Direction::Up));
+            } // Вверх
+            if (event.key.code == sf::Keyboard::Down) {
+                snake.ChangeDirection(static_cast<int>(Direction::Down));
+            } // Вниз
+        }
+    }
+}
 
-       window.clear(sf::Color::Black);
-       // Drawing code here
+void Game::Update() {
+    float time = clock.getElapsedTime().asSeconds();
+    clock.restart();
+    timer += time;
+    if (timer > delay) {
+        timer = 0;
+        snake.Tick(); // Обновляем положение змейки
+    }
+}
 
-       for(int i = 0; i < CONST::n; ++i){
-           for(int j = 0; j < CONST::m; ++j){
-                sprite.setPosition(i*CONST::size,j*CONST::size);
-                window.draw(sprite);
-           }
-       }
-       window.display();
-   }
+void Game::Render() {
+    window.clear();
+    for (int i = 0; i < consts::countTileWeight; ++i) {
+        for (int j = 0; j < consts::countTileHeight; ++j) {
+            backgroundSprite.setPosition(i * consts::tileSize, j * consts::tileSize);
+            window.draw(backgroundSprite);
+        }
+    }
+    snake.Draw(window, snakeSprite);
+    window.display();
 }

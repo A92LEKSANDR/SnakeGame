@@ -2,23 +2,26 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <iostream>
+#include "constants.h"
 
 class Snake {
 public:
-    Snake(int cellSize, int initialLength, int fieldWidth, int fieldHeight);
-
-    void move();
-    void setDirection(sf::Vector2i direction);
+    Snake(int maxLength);
+    void Move(int dx, int dy);
+    void ChangeDirection(int newDirection);
+    void Tick();
+    void Draw(sf::RenderWindow& window, sf::Sprite& sprite);
+    sf::Vector2f getHeadPosition() const;
     void grow();
-    bool checkSelfCollision() const;
-    void draw(sf::RenderWindow& window) const;
 
 private:
-    std::vector<sf::Vector2i> segments;
-    sf::Vector2i direction;
-    int cellSize;
-    int fieldWidth;
-    int fieldHeight;
+    struct Segment {
+        int x, y;
+    };
 
-    void wrapAround();
+    std::vector<Segment> segment;
+    int maxLength;
+    int length;
+    int direction;
 };
