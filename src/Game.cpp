@@ -9,8 +9,12 @@ Game::Game() : window(sf::VideoMode(consts::weightWindow, consts::heightWindow),
     if (!snakeTexture.loadFromFile("../resources/sb.png")) {
         std::cerr << "img for snake loading error" << std::endl;
     }
+    if(!foodTexture.loadFromFile("../resources/food.png)){
+        std::cer << "img for fod loading error" << std::endl;
+    }
     backgroundSprite.setTexture(backgroundTexture);
     snakeSprite.setTexture(snakeTexture);
+    foodSprite.setTexture(foodTexture);
 
     srand(static_cast<unsigned>(time(0)));
 }

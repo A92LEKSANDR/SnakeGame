@@ -1,5 +1,6 @@
 #pragma once
 #include "SFMLHeaders.h"
+#include "constants.h"
 
 class Food {
 private:
