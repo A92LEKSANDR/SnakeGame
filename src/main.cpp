@@ -1,8 +1,8 @@
 #include "Game.h"
 
 int main(){
-    Game snakeGame;
-    snakeGame.start();
+    Game game;
+    game.run();
 
     return 0;
 }
