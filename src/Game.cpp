@@ -1,9 +1,9 @@
 #include "Game.h"
 
-Game::Game() : window(sf::VideoMode(consts::weightWindow,consts::heightWindow),"Snake Game", sf::Style::Close | sf::Style::Titlebar),
-               snake(100),timer(0),delay(0.1f){
+Game::Game() : window(sf::VideoMode(consts::weightWindow, consts::heightWindow), "Snake Game"),
+	      snake(100), timer(0), delay(0.1f) {
 
- if (!backgroundTexture.loadFromFile("../resources/background.png")) {
+    if (!backgroundTexture.loadFromFile("../resources/background.png")) {
         std::cerr << "img for background loading error" << std::endl;
     }
     if (!snakeTexture.loadFromFile("../resources/sb.png")) {
@@ -11,9 +11,9 @@ Game::Game() : window(sf::VideoMode(consts::weightWindow,consts::heightWindow),"
     }
     backgroundSprite.setTexture(backgroundTexture);
     snakeSprite.setTexture(snakeTexture);
-    
-    srand(time(0));
-}   
+
+    srand(static_cast<unsigned>(time(0)));
+}
 
 void Game::run() {
     while (window.isOpen()) {
@@ -30,10 +30,18 @@ void Game::ProcessEvents() {
             window.close();
         }
         if (event.type == sf::Event::KeyPressed) {
-            if (event.key.code == sf::Keyboard::Left) { snake.ChangeDirection(1); }
-            if (event.key.code == sf::Keyboard::Right) { snake.ChangeDirection(2); }
-            if (event.key.code == sf::Keyboard::Up) { snake.ChangeDirection(3); }
-            if (event.key.code == sf::Keyboard::Down) { snake.ChangeDirection(0); }
+            if (event.key.code == sf::Keyboard::Left) { 
+                snake.ChangeDirection(static_cast<int>(Direction::Left)); 
+            }
+            if (event.key.code == sf::Keyboard::Right) { 
+                snake.ChangeDirection(static_cast<int>(Direction::Right)); 
+            }
+            if (event.key.code == sf::Keyboard::Up) { 
+               snake.ChangeDirection(static_cast<int>(Direction::Up));
+            }
+            if (event.key.code == sf::Keyboard::Down) {
+                snake.ChangeDirection(static_cast<int>(Direction::Down));
+            } 
         }
     }
 }
@@ -50,9 +58,9 @@ void Game::Update() {
 
 void Game::Render() {
     window.clear();
-    for (int i = 0; i < consts::countTitleWeight; ++i) {
-        for (int j = 0; j < consts::countTitleHeight; ++j) {
-            backgroundSprite.setPosition(i * consts::titleSize, j * consts::titleSize);
+    for (int i = 0; i < consts::countTileWeight; ++i) {
+        for (int j = 0; j < consts::countTileHeight; ++j) {
+            backgroundSprite.setPosition(i * consts::tileSize, j * consts::tileSize);
             window.draw(backgroundSprite);
         }
     }

@@ -1,38 +1,44 @@
 #include "Snake.h"
 
-<<<<<<< HEAD
 Snake::Snake(int maxLength) : maxLength(maxLength), length(4), dir(0) {
-    segment = new Segment[maxLength];
+    segment.resize(maxLength);
     for (int i = 0; i < length; ++i) {
         segment[i].x = 0;
         segment[i].y = 0;
     }
 }
-=======
-//Snake::Snake(){}
->>>>>>> c5ab4388a6eedfa5823698ecb0801f35237507ea
 
-void Snake::Tick() {
-    for (int i = length; i > 0; --i) {
-        segment[i].x = segment[i - 1].x;
-        segment[i].y = segment[i - 1].y;
-    }
-    if (dir == 0) segment[0].y += 1;
-    if (dir == 1) segment[0].x -= 1;
-    if (dir == 2) segment[0].x += 1;
-    if (dir == 3) segment[0].y -= 1;
+void Snake::ChangeDirection(int newDirection) {
+    direction = newDirection;
 }
 
-<<<<<<< HEAD
-void Snake::ChangeDirection(int newDirection) {
-    dir = newDirection;
+void Snake::Tick() {
+    for (int i = length - 1; i > 0; --i) {
+        segment[i] = segment[i - 1]; // Сдвиг сегментов
+    }
+
+    switch (direction) {
+    case 0: segment[0].x++; break; // Вправо
+    case 1: segment[0].y++; break; // Вниз
+    case 2: segment[0].x--; break; // Влево
+    case 3: segment[0].y--; break; // Вверх
+    }
 }
 
 void Snake::Draw(sf::RenderWindow& window, sf::Sprite& sprite) {
     for (int i = 0; i < length; ++i) {
-        sprite.setPosition(segment[i].x * consts::titleSize, segment[i].y * consts::titleSize);
+        sprite.setPosition(segment[i].x * consts::tileSize, segment[i].y * consts::tileSize);
         window.draw(sprite);
     }
 }
-=======
->>>>>>> c5ab4388a6eedfa5823698ecb0801f35237507ea
+
+sf::Vector2f Snake::getHeadPosition() const {
+    return sf::Vector2f(segment[0].x * consts::tileSize, segment[0].y * consts::tileSize);
+}
+
+void Snake::grow() {
+    if (length < maxLength) {
+        segment[length] = segment[length - 1];
+        ++length;
+    }
+}

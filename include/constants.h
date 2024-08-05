@@ -1,9 +1,10 @@
 #pragma once
 
-namespace consts{
-    extern const int titleSize;
-    extern const int countTitleWeight;
-    extern const int countTitleHeight;
+namespace consts {
+    extern const int tileSize;
+    extern const int countTileWeight;
+    extern const int countTileHeight;
     extern int weightWindow;
     extern int heightWindow;
 }
+

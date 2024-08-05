@@ -1,9 +1,12 @@
 #pragma once
-#include <SFML/Graphics.hpp>
+#include "SFMLHeaders.h"
 #include "Snake.h"
+#include "Food.h"
 #include "constants.h"
 #include <iostream>
 #include <time.h>
+
+enum class Direction { Right, Down, Left, Up };
 
 class Game{
 private:
@@ -19,7 +22,8 @@ private:
     float timer;
     float delay;
     Snake snake;
+   // Food food;
 public:
-Game();
-void run();
+    Game();
+    void run();
 };

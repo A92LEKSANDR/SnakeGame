@@ -1,20 +1,28 @@
 #pragma once
-#include <SFML/Graphics.hpp>
+#include "SFMLHeaders.h" 
+#include <vector>
+#include <iostream>
 #include "constants.h"
 
 class Snake {
+public:
+    Snake(int maxLength);
+    void Move(int dx, int dy);
+    void ChangeDirection(int newDirection);
+    void Tick();
+    void Draw(sf::RenderWindow& window, sf::Sprite& sprite);
+    sf::Vector2f getHeadPosition() const;
+    void grow();
+
+
 private:
     struct Segment {
         int x, y;
     };
-    int maxLength;
+    std::vector<Segment> segment;
     int length;
-    int dir; // direction
-    Segment* segment;
-public:
-    Snake(int maxLength);
-    void Tick();
-    void ChangeDirection(int newDirection);
-    void Draw(sf::RenderWindow& window, sf::Sprite& sprite);
+    int direction;
+    int maxLength;
+    int dir;
 };
 
