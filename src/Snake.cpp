@@ -23,6 +23,9 @@ void Snake::Tick() {
     case 2: segment[0].x--; break; // ¬лево
     case 3: segment[0].y--; break; // ¬верх
     }
+
+    segment[0].x = (segment[0].x + consts::countTileWeight) % consts::countTileWeight;
+    segment[0].y = (segment[0].y + consts::countTileHeight) % consts::countTileHeight;
 }
 
 void Snake::Draw(sf::RenderWindow& window, sf::Sprite& sprite) {
