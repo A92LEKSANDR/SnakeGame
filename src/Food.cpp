@@ -9,7 +9,7 @@ void Food::respawn() {
     position.y = rand() % consts::countTileHeight;
 }
 
-void Food::draw(sf::RenderWindow& window, sf::Sprite& sprite) {
+void Food::Draw(sf::RenderWindow& window, sf::Sprite& sprite) {
     sprite.setPosition(position.x * consts::tileSize, position.y * consts::tileSize);
     window.draw(sprite);
 }

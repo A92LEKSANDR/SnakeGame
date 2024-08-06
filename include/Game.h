@@ -24,7 +24,7 @@ private:
     float timer;
     float delay;
     Snake snake;
-   // Food food;
+    Food food;
 public:
     Game();
     void run();

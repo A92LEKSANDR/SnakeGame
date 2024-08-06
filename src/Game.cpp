@@ -4,14 +4,17 @@ Game::Game() : window(sf::VideoMode(consts::weightWindow, consts::heightWindow),
 	      snake(100), timer(0), delay(0.1f) {
 
     if (!backgroundTexture.loadFromFile("../resources/background.png")) {
-        std::cerr << "img for background loading error" << std::endl;
+        std::cerr << "img for background loading error" << "\n";
     }
+
     if (!snakeTexture.loadFromFile("../resources/sb.png")) {
-        std::cerr << "img for snake loading error" << std::endl;
+        std::cerr << "img for snake loading error" << "\n";
     }
-    if(!foodTexture.loadFromFile("../resources/food.png)){
-        std::cer << "img for fod loading error" << std::endl;
+
+    if(!foodTexture.loadFromFile("../resources/food.png")){
+        std::cerr << "img for fod loading error" << "\n";
     }
+
     backgroundSprite.setTexture(backgroundTexture);
     snakeSprite.setTexture(snakeTexture);
     foodSprite.setTexture(foodTexture);
@@ -57,6 +60,11 @@ void Game::Update() {
     if (timer > delay) {
         timer = 0;
         snake.Tick();
+
+        if(snake.getHeadPosition() == food.getPosition()){
+        snake.grow();
+        food.respawn();
+        }
     }
 }
 
@@ -69,5 +77,6 @@ void Game::Render() {
         }
     }
     snake.Draw(window, snakeSprite);
+    food.Draw(window,foodSprite);
     window.display();
 }
