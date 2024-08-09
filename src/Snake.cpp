@@ -1,5 +1,4 @@
 #include "Snake.h"
-#include "Game.h"
 
 Snake::Snake(int maxLength) : maxLength(maxLength), length(4), direction(Direction::Right) {
     segment.resize(maxLength);
@@ -19,10 +18,10 @@ void Snake::Tick() {
     }
 
     switch (direction) {
-    case 0: segment[0].x++; break; // ¬право
-    case 1: segment[0].y++; break; // ¬низ
-    case 2: segment[0].x--; break; // ¬лево
-    case 3: segment[0].y--; break; // ¬верх
+    case Snake::Direction::Right: segment[0].x++; break; // ¬право
+    case Snake::Direction::Down: segment[0].y++; break; // ¬низ
+    case Snake::Direction::Left: segment[0].x--; break; // ¬лево
+    case Snake::Direction::Up: segment[0].y--; break; // ¬верх
     }
 
     segment[0].x = (segment[0].x + consts::countTileWeight) % consts::countTileWeight;

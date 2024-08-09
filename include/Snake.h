@@ -4,8 +4,11 @@
 #include <iostream>
 #include "constants.h"
 
+
 class Snake {
 public:
+    enum class Direction{Right, Down, Left, Up};
+   
     Snake(int maxLength);
     void Move(int dx, int dy);
     void ChangeDirection(Direction newDirection);

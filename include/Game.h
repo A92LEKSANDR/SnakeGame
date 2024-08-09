@@ -6,8 +6,6 @@
 #include <iostream>
 #include <time.h>
 
-enum class Direction { Right, Down, Left, Up };
-
 enum class GameState{Menu,Playing, GameOver};
 
 class Game{

@@ -50,16 +50,16 @@ void Game::ProcessEvents() {
                 if (event.type == sf::Event::KeyPressed) {
                     switch (event.key.code) {
                         case sf::Keyboard::Left:
-                            snake.ChangeDirection(Direction::Left);
+                            snake.ChangeDirection(Snake::Direction::Left);
                             break;
                         case sf::Keyboard::Right:
-                            snake.ChangeDirection(Direction::Right);
+                            snake.ChangeDirection(Snake::Direction::Right);
                             break;
                         case sf::Keyboard::Up:
-                            snake.ChangeDirection(Direction::Up);
+                            snake.ChangeDirection(Snake::Direction::Up);
                             break;
                         case sf::Keyboard::Down:
-                            snake.ChangeDirection(Direction::Down);
+                            snake.ChangeDirection(Snake::Direction::Down);
                             break;
                         default:
                             break;
