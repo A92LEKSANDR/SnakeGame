@@ -1,6 +1,6 @@
 #include "Snake.h"
 
-Snake::Snake(int maxLength) : maxLength(maxLength), length(4), dir(0) {
+Snake::Snake(int maxLength) : maxLength(maxLength), length(4), direction(Direction::Right) {
     segment.resize(maxLength);
     for (int i = 0; i < length; ++i) {
         segment[i].x = 0;
@@ -8,20 +8,20 @@ Snake::Snake(int maxLength) : maxLength(maxLength), length(4), dir(0) {
     }
 }
 
-void Snake::ChangeDirection(int newDirection) {
+void Snake::ChangeDirection(Direction newDirection) {
     direction = newDirection;
 }
 
 void Snake::Tick() {
     for (int i = length - 1; i > 0; --i) {
-        segment[i] = segment[i - 1]; // Сдвиг сегментов
+        segment[i] = segment[i - 1];
     }
 
     switch (direction) {
-    case 0: segment[0].x++; break; // Вправо
-    case 1: segment[0].y++; break; // Вниз
-    case 2: segment[0].x--; break; // Влево
-    case 3: segment[0].y--; break; // Вверх
+    case Snake::Direction::Right: segment[0].x++; break; // Вправо
+    case Snake::Direction::Down: segment[0].y++; break; // Вниз
+    case Snake::Direction::Left: segment[0].x--; break; // Влево
+    case Snake::Direction::Up: segment[0].y--; break; // Вверх
     }
 
     segment[0].x = (segment[0].x + consts::countTileWeight) % consts::countTileWeight;

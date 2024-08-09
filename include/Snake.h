@@ -4,11 +4,14 @@
 #include <iostream>
 #include "constants.h"
 
+
 class Snake {
 public:
+    enum class Direction{Right, Down, Left, Up};
+   
     Snake(int maxLength);
     void Move(int dx, int dy);
-    void ChangeDirection(int newDirection);
+    void ChangeDirection(Direction newDirection);
     void Tick();
     void Draw(sf::RenderWindow& window, sf::Sprite& sprite);
     sf::Vector2f getHeadPosition() const;
@@ -21,7 +24,7 @@ private:
     };
     std::vector<Segment> segment;
     int length;
-    int direction;
+    Direction direction;
     int maxLength;
     int dir;
 };

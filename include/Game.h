@@ -6,13 +6,15 @@
 #include <iostream>
 #include <time.h>
 
-enum class Direction { Right, Down, Left, Up };
+enum class GameState{Menu,Playing, GameOver};
 
 class Game{
 private:
     void ProcessEvents();
     void Update();
     void Render();
+    void RenderMenu();
+    void RestartGame();
     sf::RenderWindow window;
     sf::Texture backgroundTexture;
     sf::Texture snakeTexture;
@@ -25,6 +27,7 @@ private:
     float delay;
     Snake snake;
     Food food;
+    GameState state;
 public:
     Game();
     void run();
