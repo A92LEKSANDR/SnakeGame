@@ -37,48 +37,51 @@ void Game::ProcessEvents() {
             window.close();
         }
 
-    switch (state) {
-        case GameState::Menu:
-             if (event.type == sf::Event::KeyPressed) {
-                 if (event.key.code == sf::Keyboard::Enter) {
-                     state = GameState::Playing;
-                   }
-              }
-        break;
-
-        case GameState::Playing:
-             if (event.type == sf::Event::KeyPressed) {
-                switch (event.key.code) {
-                     case sf::Keyboard::Left:
-                          snake.ChangeDirection(static_cast<int>(Direction::Left));
-                     break;
-                     case sf::Keyboard::Right:
-                          snake.ChangeDirection(static_cast<int>(Direction::Right));
-                     break;
-                     case sf::Keyboard::Up:
-                          snake.ChangeDirection(static_cast<int>(Direction::Up));
-                     break;
-                     case sf::Keyboard::Down:
-                          snake.ChangeDirection(static_cast<int>(Direction::Down));
-                     break;
-                     default: break;
+        switch (state) {
+            case GameState::Menu:
+                if (event.type == sf::Event::KeyPressed) {
+                    if (event.key.code == sf::Keyboard::Enter) {
+                        state = GameState::Playing;
                     }
                 }
-         break;
-
-        case GameState::GameOver:
-             if (event.type == sf::Event::KeyPressed) {
-                 if (event.key.code == sf::Keyboard::Enter) {
-                      RestartGame();
-                      state = GameState::Playing;
-                 }
-              }
                 break;
 
-            default: break;
+            case GameState::Playing:
+                if (event.type == sf::Event::KeyPressed) {
+                    switch (event.key.code) {
+                        case sf::Keyboard::Left:
+                            snake.ChangeDirection(Direction::Left);
+                            break;
+                        case sf::Keyboard::Right:
+                            snake.ChangeDirection(Direction::Right);
+                            break;
+                        case sf::Keyboard::Up:
+                            snake.ChangeDirection(Direction::Up);
+                            break;
+                        case sf::Keyboard::Down:
+                            snake.ChangeDirection(Direction::Down);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                break;
+
+            case GameState::GameOver:
+                if (event.type == sf::Event::KeyPressed) {
+                    if (event.key.code == sf::Keyboard::Enter) {
+                        RestartGame();
+                        state = GameState::Playing;
+                    }
+                }
+                break;
+
+            default:
+                break;
         }
     }
 }
+
 
 void Game::Update() {
     float time = clock.getElapsedTime().asSeconds();
