@@ -61,6 +61,8 @@ void Game::ProcessEvents() {
                         case sf::Keyboard::Down:
                             snake.ChangeDirection(Snake::Direction::Down);
                             break;
+                        case sf::Keyboard::Escape:
+                            state = GameState::Menu;    
                         default:
                             break;
                     }
@@ -84,6 +86,10 @@ void Game::ProcessEvents() {
 
 
 void Game::Update() {
+    if(state != GameState::Playing){
+        //dont update, when state Menu and GameOver
+        return;
+    }
     float time = clock.getElapsedTime().asSeconds();
     clock.restart();
     timer += time;
