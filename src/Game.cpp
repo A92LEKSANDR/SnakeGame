@@ -1,7 +1,7 @@
 #include "Game.h"
 
 Game::Game() : window(sf::VideoMode(consts::weightWindow, consts::heightWindow), "Snake Game"),
-	      snake(100), timer(0), delay(0.1f),state(GameState::Menu) {
+	      snake(100), timer(0), delay(0.1f),food(snake),state(GameState::Menu) {
 
     if (!backgroundTexture.loadFromFile("../resources/background.png")) {
         std::cerr << "img for background loading error" << "\n";
@@ -99,7 +99,7 @@ void Game::Update() {
 
         if(snake.getHeadPosition() == food.getPosition()){
         snake.grow();
-        food.respawn();
+        food.respawn(snake);
         }
     }
 }
@@ -139,15 +139,25 @@ void Game::RenderMenu() {
     if (!font.loadFromFile("../resources/ArialRegular.ttf")) {
         std::cerr << "Font loading error" << std::endl;
     }
-    sf::Text text("Press Enter to Start", font, 50);
+
+    for (int i = 0; i < consts::countTileWeight; ++i) {
+        for (int j = 0; j < consts::countTileHeight; ++j) {
+            backgroundSprite.setPosition(i * consts::tileSize, j * consts::tileSize);
+            window.draw(backgroundSprite);
+        }
+    } 
+
+    sf::Text text("Press Enter to Start", font, 25);
     text.setFillColor(sf::Color::White);
     text.setPosition(consts::weightWindow / 4, consts::heightWindow / 3);
+    
+       
     window.draw(text);
 }
 
 void Game::RestartGame() {
     snake = Snake(100); // Сбрасываем змейку
-    food.respawn(); // Сбрасываем еду
+    food.respawn(snake); // Сбрасываем еду
     timer = 0; // Сбрасываем таймер
     std::cerr << "Game restarted!" << std::endl;
 }
