@@ -15,9 +15,8 @@ public:
     void Tick();
     void Draw(sf::RenderWindow& window, sf::Sprite& sprite);
     sf::Vector2f getHeadPosition() const;
+    bool isOnSnake(const sf::Vector2f& position) const; 
     void grow();
-
-
 private:
     struct Segment {
         int x, y;

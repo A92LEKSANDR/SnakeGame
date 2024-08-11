@@ -18,10 +18,10 @@ void Snake::Tick() {
     }
 
     switch (direction) {
-    case Snake::Direction::Right: segment[0].x++; break; // ¬право
-    case Snake::Direction::Down: segment[0].y++; break; // ¬низ
-    case Snake::Direction::Left: segment[0].x--; break; // ¬лево
-    case Snake::Direction::Up: segment[0].y--; break; // ¬верх
+    case Snake::Direction::Right: segment[0].x++; break; 
+    case Snake::Direction::Down: segment[0].y++; break; 
+    case Snake::Direction::Left: segment[0].x--; break;
+    case Snake::Direction::Up: segment[0].y--; break;
     }
 
     segment[0].x = (segment[0].x + consts::countTileWeight) % consts::countTileWeight;
@@ -44,4 +44,13 @@ void Snake::grow() {
         segment[length] = segment[length - 1];
         ++length;
     }
+}
+
+bool Snake::isOnSnake(const sf::Vector2f& position) const {
+    for (int i = 0; i < length; ++i) {
+        if (segment[i].x == position.x && segment[i].y == position.y) {
+            return true; 
+        }
+    }
+    return false; 
 }
