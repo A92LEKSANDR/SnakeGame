@@ -98,8 +98,11 @@ void Game::Update() {
         snake.Tick();
 
         if(snake.getHeadPosition() == food.getPosition()){
-        snake.grow();
-        food.respawn(snake);
+            snake.grow();
+            food.respawn(snake);
+        }
+        if(snake.checkSelfCollision()){
+            state = GameState::GameOver;
         }
     }
 }
@@ -124,7 +127,7 @@ void Game::Render() {
         if (!font.loadFromFile("../resources/ArialRegular.ttf")) {
             std::cerr << "Font loading error" << std::endl;
         }
-        sf::Text text("Game Over\nPress Enter to Restart", font, 50);
+        sf::Text text("Game Over\nPress Enter to Restart", font, 25);
         text.setFillColor(sf::Color::Red);
         text.setPosition(consts::weightWindow / 4, consts::heightWindow / 3);
         window.draw(text);

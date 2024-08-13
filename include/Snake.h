@@ -17,6 +17,7 @@ public:
     sf::Vector2f getHeadPosition() const;
     bool isOnSnake(const sf::Vector2f& position) const; 
     void grow();
+    bool checkSelfCollision();
 private:
     struct Segment {
         int x, y;

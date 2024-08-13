@@ -54,3 +54,12 @@ bool Snake::isOnSnake(const sf::Vector2f& position) const {
     }
     return false; 
 }
+
+bool Snake::checkSelfCollision(){
+    for(int i = 1; i < segment.size(); ++i){
+        if(segment[0].x == segment[i].x && segment[0].y == segment[i].y){
+            return true;
+        } 
+    }
+    return false;
+}
