@@ -1,45 +1,42 @@
-# Snake Game
+# Игра "Змейка"
+Это простая игра "Змейка", реализованная на C++ с использованием библиотеки SFML.
 
-This is a simple Snake game implemented in C++ using the SFML library.
-
-### Prerequisites
-
-`C++17 compiler`
+## Необходимые компоненты
+`Компилятор C++17`
 `CMake`
 `SFML 2.6.1`
 
-## Installation
 
-### Building the Game on Linux
+## Установка
+### Сборка игры на Linux
 
-1. **Install SFML using a package manager**:
-
-   For Debian-based systems (e.g., Ubuntu):
-```
-    sudo apt update
-    sudo apt install libsfml-dev
-```  
-   For Red Hat-based systems (e.g., Fedora):
-```
-    sudo dnf install SFML-devel
-```
+1. **Установите SFML с помощью менеджера пакетов:**:
+   
    For Arch Linux:
 ```   
    sudo pacman -S sfml
-```   
-2. **Clone the repository**:
+``` 
+   For Debian-based systems (...Ubuntu):
+```
+    sudo apt install libsfml-dev
+```  
+   For Red Hat-based systems (...Fedora):
+```
+    sudo dnf install SFML-devel
+```
+2. **Клонируйте репозиторий:**:
 ```   
    git clone https://github.com/A92LEKSANDR/SnakeGame.git
    cd SnakeGame
 ```
-3. **Create a build directory and build the project**:
+3. **Создайте каталог для сборки и соберите проект:**:
 ```   
    mkdir build
    cd build
    cmake ..
    make
 ```
-4. **Run the game**:
+4. **Запуск игры**:
 ```   
    ./SnakeGame
 ```   
