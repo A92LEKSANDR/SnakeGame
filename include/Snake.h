@@ -18,6 +18,7 @@ public:
     bool isOnSnake(const sf::Vector2f& position) const; 
     void grow();
     bool checkSelfCollision();
+    Direction getDirection() const;
 private:
     struct Segment {
         int x, y;

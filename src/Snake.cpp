@@ -63,3 +63,7 @@ bool Snake::checkSelfCollision(){
     }
     return false;
 }
+
+Snake::Direction Snake::getDirection() const{
+    return direction;
+}

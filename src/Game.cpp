@@ -45,30 +45,43 @@ void Game::ProcessEvents() {
                     }
                 }
                 break;
+case GameState::Playing:
+    if (event.type == sf::Event::KeyPressed) {
+        Snake::Direction currentDirection = snake.getDirection(); // Предположим, у вас есть метод getDirection()
 
-            case GameState::Playing:
-                if (event.type == sf::Event::KeyPressed) {
-                    switch (event.key.code) {
-                        case sf::Keyboard::Left:
-                            snake.ChangeDirection(Snake::Direction::Left);
-                            break;
-                        case sf::Keyboard::Right:
-                            snake.ChangeDirection(Snake::Direction::Right);
-                            break;
-                        case sf::Keyboard::Up:
-                            snake.ChangeDirection(Snake::Direction::Up);
-                            break;
-                        case sf::Keyboard::Down:
-                            snake.ChangeDirection(Snake::Direction::Down);
-                            break;
-                        case sf::Keyboard::Escape:
-                            state = GameState::Menu;    
-                        default:
-                            break;
-                    }
-                }
+        Snake::Direction newDirection;
+        switch (event.key.code) {
+            case sf::Keyboard::Left:
+                newDirection = Snake::Direction::Left;
                 break;
+            case sf::Keyboard::Right:
+                newDirection = Snake::Direction::Right;
+                break;
+            case sf::Keyboard::Up:
+                newDirection = Snake::Direction::Up;
+                break;
+            case sf::Keyboard::Down:
+                newDirection = Snake::Direction::Down;
+                break;
+            case sf::Keyboard::Escape:
+                state = GameState::Menu;
+                return; // Завершаем выполнение, чтобы не менять направление
+            default:
+                return; // Игнорируем другие клавиши
+        }
 
+        // Проверяем, не пытается ли змейка повернуть на противоположное направление
+        if ((currentDirection == Snake::Direction::Left && newDirection == Snake::Direction::Right) ||
+            (currentDirection == Snake::Direction::Right && newDirection == Snake::Direction::Left) ||
+            (currentDirection == Snake::Direction::Up && newDirection == Snake::Direction::Down) ||
+            (currentDirection == Snake::Direction::Down && newDirection == Snake::Direction::Up)) {
+            return; // Игнорируем команду
+        }
+
+        // Если проверка пройдена, меняем направление
+        snake.ChangeDirection(newDirection);
+    }
+    break;
             case GameState::GameOver:
                 if (event.type == sf::Event::KeyPressed) {
                     if (event.key.code == sf::Keyboard::Enter) {
