@@ -16,5 +16,5 @@ else()
     message(FATAL_ERROR "No source files found in src directory!")
 endif()
 
-target_link_libraries(SnakeGame sfml-system sfml-window sfml-graphics)
+target_link_libraries(SnakeGame sfml-system sfml-window sfml-graphics sfml-audio)
 
