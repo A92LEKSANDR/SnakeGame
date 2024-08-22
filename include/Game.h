@@ -15,18 +15,27 @@ private:
     void Render();
     void RenderMenu();
     void RestartGame();
+    
     sf::RenderWindow window;
+
     sf::Texture backgroundTexture;
     sf::Texture snakeTexture;
     sf::Texture foodTexture;
     sf::Sprite backgroundSprite;
     sf::Sprite snakeSprite;
     sf::Sprite foodSprite;
+
+    sf::SoundBuffer buffer;
+    sf::Sound sound;
+    sf::Music music;
+
     sf::Clock clock;
     float timer;
     float delay;
+
     Snake snake;
     Food food;
+
     GameState state;
 public:
     Game();

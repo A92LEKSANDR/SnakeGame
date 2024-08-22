@@ -19,6 +19,12 @@ Game::Game() : window(sf::VideoMode(consts::weightWindow, consts::heightWindow),
     snakeSprite.setTexture(snakeTexture);
     foodSprite.setTexture(foodTexture);
 
+    if(!buffer.loadFromFile("../resources/eat.wav")){
+        std::cerr << "Error loading sound file";        
+    }
+
+    sound.setBuffer(buffer);
+
     srand(static_cast<unsigned>(time(0)));
 }
 
@@ -113,6 +119,7 @@ void Game::Update() {
         if(snake.getHeadPosition() == food.getPosition()){
             snake.grow();
             food.respawn(snake);
+            sound.play();
         }
         if(snake.checkSelfCollision()){
             state = GameState::GameOver;
