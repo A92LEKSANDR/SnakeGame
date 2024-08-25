@@ -22,8 +22,12 @@ Game::Game() : window(sf::VideoMode(consts::weightWindow, consts::heightWindow),
     if(!buffer.loadFromFile("../resources/eat.wav")){
         std::cerr << "Error loading sound file";        
     }
+    if(!music.openFromFile("../resources/main.ogg")){
+        std::cerr << "Error loading music file";
+    }
 
     sound.setBuffer(buffer);
+    music.play();
 
     srand(static_cast<unsigned>(time(0)));
 }
