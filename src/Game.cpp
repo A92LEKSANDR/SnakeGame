@@ -27,10 +27,15 @@ Game::Game() : window(sf::VideoMode(consts::weightWindow, consts::heightWindow),
     }
 
     sound.setBuffer(buffer);
+    music.setLoop(true);
+    music.setVolume(50);
     music.play();
 
     srand(static_cast<unsigned>(time(0)));
+
 }
+
+
 
 void Game::run() {
     while (window.isOpen()) {
@@ -56,6 +61,7 @@ void Game::ProcessEvents() {
                 }
                 break;
 case GameState::Playing:
+                music.start();
     if (event.type == sf::Event::KeyPressed) {
         Snake::Direction currentDirection = snake.getDirection(); // Предположим, у вас есть метод getDirection()
 
@@ -162,6 +168,7 @@ void Game::Render() {
 void Game::RenderMenu() {
     // Отображение главного меню
     // Например, текст "Press Enter to Start"
+    music.pause();
     sf::Font font;
     if (!font.loadFromFile("../resources/ArialRegular.ttf")) {
         std::cerr << "Font loading error" << std::endl;
