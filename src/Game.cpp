@@ -35,8 +35,6 @@ Game::Game() : window(sf::VideoMode(consts::weightWindow, consts::heightWindow),
 
 }
 
-
-
 void Game::run() {
     while (window.isOpen()) {
         ProcessEvents();
