@@ -12,7 +12,11 @@ void Food::respawn(const Snake& snake) {
  }
 
 void Food::Draw(sf::RenderWindow& window, sf::Sprite& sprite) {
-    sprite.setPosition(position.x * consts::tileSize, position.y * consts::tileSize);
+    // SFML 3: используем sf::Vector2f вместо отдельных x, y
+    sprite.setPosition(sf::Vector2f(
+        position.x * consts::tileSize,
+        position.y * consts::tileSize
+        ));
     window.draw(sprite);
 }
 
