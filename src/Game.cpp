@@ -209,7 +209,7 @@ void Game::Render() {
         for (int i = 0; i < consts::countTileWeight; ++i) {
             for (int j = 0; j < consts::countTileHeight; ++j) {
                 backgroundSprite->setPosition(sf::Vector2f(i *static_cast<float>(consts::tileSize), static_cast<float>(j * consts::tileSize)));
-                //window.draw(backgroundSprite);
+                window.draw(*backgroundSprite);
             }
         }
         snake.Draw(window, *snakeSprite);
