@@ -25,4 +25,4 @@ cmake_install.cmake
 Makefile
 
 # Qt Creator
-*.qtcreator
+.qtcreator/CMakeLists.txt.user
