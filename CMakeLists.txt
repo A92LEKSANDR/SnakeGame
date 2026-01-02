@@ -1,20 +1,18 @@
-cmake_minimum_required(VERSION 3.10)
-project(SnakeGame)
+cmake_minimum_required(VERSION 4.0)
+project(SnakeGame LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(SFML 2.6.1 COMPONENTS system window graphics REQUIRED)
-include_directories(${CMAKE_SOURCE_DIR}/include)
-# Собираем все .cpp файлы из папки src
-file(GLOB SOURCES "src/*.cpp")
+find_package(SFML 3 REQUIRED COMPONENTS System Window Graphics Audio)
 
-# Проверяем, что SOURCES не пуст
-if(SOURCES)
-    # Создаем исполняемый файл с использованием собранных файлов
-    add_executable(SnakeGame ${SOURCES})
-else()
-    message(FATAL_ERROR "No source files found in src directory!")
-endif()
+add_executable(SnakeGame
+    src/main.cpp
+    src/Game.cpp
+    src/Snake.cpp
+    src/Food.cpp
+    src/constants.cpp
+)
+target_include_directories(SnakeGame PRIVATE ${PROJECT_SOURCE_DIR}/include)
 
-target_link_libraries(SnakeGame sfml-system sfml-window sfml-graphics sfml-audio)
-
+target_link_libraries(SnakeGame PRIVATE SFML::System SFML::Window SFML::Graphics SFML::Audio)

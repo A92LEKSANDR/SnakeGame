@@ -1,33 +1,42 @@
 #include "Game.h"
+//#include <cstdio>
+#include <stdexcept>
 
-Game::Game() : window(sf::VideoMode(consts::weightWindow, consts::heightWindow), "Snake Game"),
-	      snake(100), timer(0), delay(0.1f),food(snake),state(GameState::Menu) {
-
-    if (!backgroundTexture.loadFromFile("../resources/background.png")) {
-        std::cerr << "img for background loading error" << "\n";
+Game::Game() 
+    : window(sf::VideoMode(sf::Vector2u(consts::weightWindow, consts::heightWindow)),"Snake Game"),
+     snake(100),
+     timer(0),
+     delay(0.1f),
+     food(snake),
+     state(GameState::Menu),
+     sound(buffer)
+    {
+   
+   // Загрузка текстур
+    if (!backgroundTexture.loadFromFile("../../resources/background.png")) {
+        std::cerr << "Failed to load background texture\n";
     }
-
-    if (!snakeTexture.loadFromFile("../resources/sb.png")) {
-        std::cerr << "img for snake loading error" << "\n";
+    if (!snakeTexture.loadFromFile("../../resources/sb.png")) {
+        std::cerr << "Failed to load snake texture\n";
     }
-
-    if(!foodTexture.loadFromFile("../resources/food.png")){
-        std::cerr << "img for fod loading error" << "\n";
+    if (!foodTexture.loadFromFile("../../resources/food.png")) {
+        std::cerr << "Failed to load food texture\n";
     }
+    
+    // Инициализация спрайтов
+    backgroundSprite = std::make_unique<sf::Sprite>(backgroundTexture);
+    snakeSprite = std::make_unique<sf::Sprite>(snakeTexture);
+    foodSprite = std::make_unique<sf::Sprite>(foodTexture);
 
-    backgroundSprite.setTexture(backgroundTexture);
-    snakeSprite.setTexture(snakeTexture);
-    foodSprite.setTexture(foodTexture);
 
-    if(!buffer.loadFromFile("../resources/eat.wav")){
-        std::cerr << "Error loading sound file";        
-    }
-    if(!music.openFromFile("../resources/main.ogg")){
-        std::cerr << "Error loading music file";
-    }
-
+   if(!buffer.loadFromFile("../../resources/eat.wav")){
+    throw std::runtime_error("Failed to load sound buffer");
+   }        
+   if(!music.openFromFile("../../resources/main.ogg")){
+    throw std::runtime_error("Failed to load music");
+   }
     sound.setBuffer(buffer);
-    music.setLoop(true);
+    music.setLooping(true);
     music.setVolume(50);
     music.play();
 
@@ -44,73 +53,129 @@ void Game::run() {
 }
 
 void Game::ProcessEvents() {
-    sf::Event event;
-    while (window.pollEvent(event)) {
-        if (event.type == sf::Event::Closed) {
+    while (auto event = window.pollEvent()) {
+        if(!event) continue;
+
+        if (event->is<sf::Event::Closed>()) {
             window.close();
+            continue;
         }
 
+        // Обработка общих событий (если есть)
+        if (handleCommonEvents(*event)) {
+            continue;
+        }
+
+        // Обработка событий по состояниям
         switch (state) {
-            case GameState::Menu:
-                if (event.type == sf::Event::KeyPressed) {
-                    if (event.key.code == sf::Keyboard::Enter) {
-                        state = GameState::Playing;
-                    }
-                }
-                break;
-case GameState::Playing:
-                music.start();
-    if (event.type == sf::Event::KeyPressed) {
-        Snake::Direction currentDirection = snake.getDirection(); // Предположим, у вас есть метод getDirection()
-
-        Snake::Direction newDirection;
-        switch (event.key.code) {
-            case sf::Keyboard::Left:
-                newDirection = Snake::Direction::Left;
-                break;
-            case sf::Keyboard::Right:
-                newDirection = Snake::Direction::Right;
-                break;
-            case sf::Keyboard::Up:
-                newDirection = Snake::Direction::Up;
-                break;
-            case sf::Keyboard::Down:
-                newDirection = Snake::Direction::Down;
-                break;
-            case sf::Keyboard::Escape:
-                state = GameState::Menu;
-                return; // Завершаем выполнение, чтобы не менять направление
-            default:
-                return; // Игнорируем другие клавиши
-        }
-
-        // Проверяем, не пытается ли змейка повернуть на противоположное направление
-        if ((currentDirection == Snake::Direction::Left && newDirection == Snake::Direction::Right) ||
-            (currentDirection == Snake::Direction::Right && newDirection == Snake::Direction::Left) ||
-            (currentDirection == Snake::Direction::Up && newDirection == Snake::Direction::Down) ||
-            (currentDirection == Snake::Direction::Down && newDirection == Snake::Direction::Up)) {
-            return; // Игнорируем команду
-        }
-
-        // Если проверка пройдена, меняем направление
-        snake.ChangeDirection(newDirection);
-    }
-    break;
-            case GameState::GameOver:
-                if (event.type == sf::Event::KeyPressed) {
-                    if (event.key.code == sf::Keyboard::Enter) {
-                        RestartGame();
-                        state = GameState::Playing;
-                    }
-                }
-                break;
-
-            default:
-                break;
+        case GameState::Menu: handleMenuEvent(*event); break;
+        case GameState::Playing: handlePlayingEvent(*event); break;
+        case GameState::GameOver: handleGameOverEvent(*event); break;
+        default: break;
         }
     }
 }
 
+void Game::handleMenuEvent(const sf::Event& event) {
+    if (!event.is<sf::Event::KeyPressed>()) return;
+
+    const auto& keyEvent = event.getIf<sf::Event::KeyPressed>();
+    if (keyEvent && keyEvent->scancode == sf::Keyboard::Scan::Enter) {
+        state = GameState::Playing;
+    }
+}
+
+void Game::handlePlayingEvent(const sf::Event& event) {
+    if (!event.is<sf::Event::KeyPressed>()) return;
+
+    const auto& keyEvent = event.getIf<sf::Event::KeyPressed>();
+    if (!keyEvent) return;
+
+    processPlayerInput(keyEvent->scancode);
+}
+
+void Game::processPlayerInput(sf::Keyboard::Scancode scancode) {
+    static const std::unordered_map<sf::Keyboard::Scancode, Snake::Direction> keyToDirection = {
+                                                                                                {sf::Keyboard::Scan::Left, Snake::Direction::Left},
+                                                                                                {sf::Keyboard::Scan::Right, Snake::Direction::Right},
+                                                                                                {sf::Keyboard::Scan::Up, Snake::Direction::Up},
+                                                                                                {sf::Keyboard::Scan::Down, Snake::Direction::Down},
+                                                                                                };
+
+    // Специальные клавиши
+    if (scancode == sf::Keyboard::Scan::Escape) {
+        state = GameState::Menu;
+        return;
+    }
+
+    // Проверяем, является ли клавиша направлением
+    auto it = keyToDirection.find(scancode);
+    if (it == keyToDirection.end()) return;
+
+    Snake::Direction currentDirection = snake.getDirection();
+    Snake::Direction newDirection = it->second;
+
+    // Проверка противоположного направления
+    if (isOppositeDirection(currentDirection, newDirection)) {
+        return;
+    }
+
+    if (newDirection != currentDirection) {
+        snake.ChangeDirection(newDirection);
+    }
+}
+
+bool Game::isOppositeDirection(Snake::Direction dir1, Snake::Direction dir2) {
+    return (dir1 == Snake::Direction::Left && dir2 == Snake::Direction::Right) ||
+           (dir1 == Snake::Direction::Right && dir2 == Snake::Direction::Left) ||
+           (dir1 == Snake::Direction::Up && dir2 == Snake::Direction::Down) ||
+           (dir1 == Snake::Direction::Down && dir2 == Snake::Direction::Up);
+}
+
+bool Game::handleCommonEvents(const sf::Event& event) {
+    // Здесь можно обрабатывать события, которые нужны во всех состояниях
+    // Например: пауза, скриншоты, глобальные горячие клавиши
+
+    // Пример: обработка клавиши P для паузы
+    if (event.is<sf::Event::KeyPressed>()) {
+        const auto& keyEvent = event.getIf<sf::Event::KeyPressed>();
+        if (keyEvent && keyEvent->scancode == sf::Keyboard::Scan::P) {
+            // Переключение паузы
+            if (state == GameState::Playing) {
+                state = GameState::Menu; // или создайте отдельное состояние Paused
+                music.pause();
+            } else if (state == GameState::Menu) {
+                state = GameState::Playing;
+                music.play();
+            }
+            return true; // Событие обработано
+        }
+    }
+
+    return false; // Событие не обработано как общее
+}
+
+void Game::handleGameOverEvent(const sf::Event& event) {
+    if (!event.is<sf::Event::KeyPressed>()) return;
+
+    const auto& keyEvent = event.getIf<sf::Event::KeyPressed>();
+    if (!keyEvent) return;
+
+    // Обработка клавиш в состоянии GameOver
+    switch (keyEvent->scancode) {
+    case sf::Keyboard::Scan::Enter:
+        RestartGame();
+        state = GameState::Playing;
+        break;
+
+    case sf::Keyboard::Scan::Escape:
+        state = GameState::Menu;
+        break;
+
+    default:
+        break;
+    }
+}
 
 void Game::Update() {
     if(state != GameState::Playing){
@@ -137,27 +202,34 @@ void Game::Update() {
 
 void Game::Render() {
     window.clear();
+
     if (state == GameState::Menu) {
         RenderMenu();
     } else if (state == GameState::Playing) {
         for (int i = 0; i < consts::countTileWeight; ++i) {
             for (int j = 0; j < consts::countTileHeight; ++j) {
-                backgroundSprite.setPosition(i * consts::tileSize, j * consts::tileSize);
-                window.draw(backgroundSprite);
+                backgroundSprite->setPosition(sf::Vector2f(i *static_cast<float>(consts::tileSize), static_cast<float>(j * consts::tileSize)));
+                window.draw(*backgroundSprite);
             }
         }
-        snake.Draw(window, snakeSprite);
-        food.Draw(window, foodSprite); // Отрисовываем еду
+        snake.Draw(window, *snakeSprite);
+        food.Draw(window, *foodSprite); // Отрисовываем еду
     } else if (state == GameState::GameOver) {
         // Отображение экрана окончания игры
         // Например, текст "Game Over" и предложение нажать Enter для перезапуска
         sf::Font font;
-        if (!font.loadFromFile("../resources/ArialRegular.ttf")) {
-            std::cerr << "Font loading error" << std::endl;
+        if (!font.openFromFile("../../resources/ArialRegular.ttf")) {
+            throw std::runtime_error("Failed to load font");
         }
-        sf::Text text("Game Over\nPress Enter to Restart", font, 25);
+        sf::Text text(font);
+       // text.setFont(font);
+        text.setString("Game Over\nPress Enter to Restart");
+        text.setCharacterSize(25);
         text.setFillColor(sf::Color::Red);
-        text.setPosition(consts::weightWindow / 4, consts::heightWindow / 3);
+        text.setPosition(sf::Vector2f(
+             consts::weightWindow / 4,
+             consts::heightWindow / 3
+        ));
         window.draw(text);
     }
     window.display();
@@ -168,22 +240,29 @@ void Game::RenderMenu() {
     // Например, текст "Press Enter to Start"
     music.pause();
     sf::Font font;
-    if (!font.loadFromFile("../resources/ArialRegular.ttf")) {
-        std::cerr << "Font loading error" << std::endl;
+    if (!font.openFromFile("../../resources/ArialRegular.ttf")) {
+        throw std::runtime_error("Failed to load font");
     }
 
     for (int i = 0; i < consts::countTileWeight; ++i) {
         for (int j = 0; j < consts::countTileHeight; ++j) {
-            backgroundSprite.setPosition(i * consts::tileSize, j * consts::tileSize);
-            window.draw(backgroundSprite);
+            backgroundSprite->setPosition(
+                    sf::Vector2f(i * static_cast<float>(consts::tileSize),
+                                 j * static_cast<float>(consts::tileSize))
+                    );
+           window.draw(*backgroundSprite);
         }
-    } 
+    }
 
-    sf::Text text("Press Enter to Start", font, 25);
+    sf::Text text(font);
+    text.setFont(font);
+    text.setString("Press Enter to Start");
+    text.setCharacterSize(25);
     text.setFillColor(sf::Color::White);
-    text.setPosition(consts::weightWindow / 4, consts::heightWindow / 3);
-    
-       
+    text.setPosition(sf::Vector2f(
+        consts::weightWindow / 4,
+        consts::heightWindow / 3
+    ));       
     window.draw(text);
 }
 

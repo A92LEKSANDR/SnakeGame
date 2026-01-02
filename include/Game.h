@@ -5,6 +5,7 @@
 #include "constants.h"
 #include <iostream>
 #include <time.h>
+#include "memory"
 
 enum class GameState{Menu,Playing, GameOver};
 
@@ -16,14 +17,22 @@ private:
     void RenderMenu();
     void RestartGame();
     
+    void handleMenuEvent(const sf::Event& event);
+    void handlePlayingEvent(const sf::Event& event);
+    void processPlayerInput(sf::Keyboard::Scancode scancode);
+    bool isOppositeDirection(Snake::Direction dir1, Snake::Direction dir2);
+    void handleGameOverEvent(const sf::Event& event);
+    bool handleCommonEvents(const sf::Event& event);
+
     sf::RenderWindow window;
 
     sf::Texture backgroundTexture;
     sf::Texture snakeTexture;
     sf::Texture foodTexture;
-    sf::Sprite backgroundSprite;
-    sf::Sprite snakeSprite;
-    sf::Sprite foodSprite;
+    
+    std::unique_ptr<sf::Sprite> backgroundSprite;
+    std::unique_ptr<sf::Sprite> snakeSprite;
+    std::unique_ptr<sf::Sprite> foodSprite;
 
     sf::SoundBuffer buffer;
     sf::Sound sound;

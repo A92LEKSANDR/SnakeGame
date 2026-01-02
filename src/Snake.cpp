@@ -30,7 +30,11 @@ void Snake::Tick() {
 
 void Snake::Draw(sf::RenderWindow& window, sf::Sprite& sprite) {
     for (int i = 0; i < length; ++i) {
-        sprite.setPosition(segment[i].x * consts::tileSize, segment[i].y * consts::tileSize);
+        // SFML 3: используем sf::Vector2f вместо отдельных x, y
+        sprite.setPosition(sf::Vector2f(
+            segment[i].x * consts::tileSize,
+            segment[i].y * consts::tileSize
+            ));
         window.draw(sprite);
     }
 }
