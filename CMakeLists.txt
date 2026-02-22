@@ -12,7 +12,10 @@ add_executable(SnakeGame
     src/Snake.cpp
     src/Food.cpp
     src/constants.cpp
+    include/pch.h
+    src/pch.cpp
 )
 target_include_directories(SnakeGame PRIVATE ${PROJECT_SOURCE_DIR}/include)
+target_precompile_headers(SnakeGame PRIVATE ${PROJECT_SOURCE_DIR}/include/pch.h)
 
 target_link_libraries(SnakeGame PRIVATE SFML::System SFML::Window SFML::Graphics SFML::Audio)

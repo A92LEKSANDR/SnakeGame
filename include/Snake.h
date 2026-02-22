@@ -1,7 +1,5 @@
 #pragma once
-#include "SFMLHeaders.h" 
-#include <vector>
-#include <iostream>
+#include "pch.h"
 #include "constants.h"
 
 

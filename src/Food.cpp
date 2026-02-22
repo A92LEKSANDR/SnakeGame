@@ -1,5 +1,6 @@
 #include "Food.h"
 
+
 Food::Food(const Snake& snake) {
     respawn(snake);
 }
