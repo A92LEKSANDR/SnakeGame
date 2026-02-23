@@ -1,11 +1,9 @@
 #pragma once
-#include "SFMLHeaders.h"
+#include "pch.h"
 #include "Snake.h"
 #include "Food.h"
 #include "constants.h"
-#include <iostream>
-#include <time.h>
-#include "memory"
+
 
 enum class GameState{Menu,Playing, GameOver};
 
